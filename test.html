@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<meta charset="UTF-8">
+<style type="text/css">
+@import "./style.css";
+strong {color:red;}
+</style>
+<head>
+<p>Last Modified: 2016/03/09 23:44:30.</p>
+<title>もしかしてサイトスワップのテスト</title>
+<script type="text/javascript" src="./did_you_mean.js"></script>
+<script type="text/javascript" src="./test.js"></script>
+<script type="text/javascript">
+<!--
+onload = function(){
+	TestAll();
+}
+-->
+</script>
+<link rel="shortcut icon" href="./images/t.gif" />
+</head>
+<body>
+<div id="container">
+	<!--
+	コメントアウトしている間はデバッグ中じゃないです。
+	<b><span style="color:red">現在、デバッグ中です!</span></b>
+	-->
+	<h1>もしかしてサイトスワップのテスト</h1>
+
+	<h2>概要</h2>
+	<p>
+	※このページは開発者向けのページです。<br>
+	<a href="./index.html">もしかしてサイトスワップ</a> 用のJavaScriptのテストです。<br>
+	ページの読み込み時に、自動的にテストが実行されます。
+	</p>
+
+	<h2>テスト結果</h2>
+	<h3>Passed</h3>
+	<!-- Passed -->
+	<pre><span id="PassedResult"></span></pre>
+	<div onclick="obj=document.getElementById('passedResultContainer').style; obj.display=(obj.display=='none')?'block':'none';">
+		<a style="color:#fff; background-color:#999; cursor:pointer;padding: 1px 10px 1px 10px;">Passed tests (クリックで展開)</a>
+	</div>
+	<div id="passedResultContainer" style="display:none;clear:both;">
+		<table id="PassedResultTable" border="1"></table>
+	</div>
+	<h3>Failed</h3>
+	<!-- Failed -->
+	<pre><span id="FailedResult"></span></pre>
+	<pre><span id="Notes"></span></pre>
+	<table id="FailedResultTable" border="1"></table>
+
+	<h2>このテストの作者</h2>
+	<p>
+	Tatt(たっと) <a href="https://twitter.com/tatt61880">@tatt61880</a>
+	</p>
+</div>
+</body>
+</html>
