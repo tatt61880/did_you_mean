@@ -38,3 +38,13 @@ body {
 	padding: 0px 10px 0px 10px;
 	background-color: #ffffff;
 }
+
+strong {
+  color: red;
+}
+input[type="button"]{
+  margin: 10px;
+  padding: 0px 5px;
+  background-color: #FDF;
+  border-radius: 10px;
+}
