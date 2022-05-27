@@ -1,19 +1,24 @@
 ﻿<!DOCTYPE html>
 <html lang="ja">
-<meta charset="UTF-8">
-<style type="text/css">
-@import "./style.css";
-strong {color:red;}
-</style>
 <head>
   <title>もしかしてサイトスワップのテスト</title>
+  <meta charset="UTF-8">
   <link rel="icon" type="image/x-icon" href="./images/favicon.png">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2022.05.26">
 
-  <script type="text/javascript" src="./did_you_mean.js"></script>
-  <script type="text/javascript" src="./test.js"></script>
+  <link rel="stylesheet" href="./style.css">
+  <style type="text/css">
+strong {color:red;}
+th, td {
+  border: 1px solid gray;
+  padding: 5px 10px;
+}
+  </style>
 
-  <script type="text/javascript">
+  <script src="./did_you_mean.js"></script>
+  <script src="./test.js"></script>
+
+  <script>
   <!--
   onload = function(){
     TestAll();
@@ -42,16 +47,16 @@ strong {color:red;}
   <!-- Passed -->
   <pre><span id="PassedResult"></span></pre>
   <div onclick="obj=document.getElementById('passedResultContainer').style; obj.display=(obj.display=='none')?'block':'none';">
-    <a style="color:#fff; background-color:#999; cursor:pointer;padding: 1px 10px 1px 10px;">Passed tests (クリックで展開)</a>
+    <a style="color:#fff; background-color:#999; cursor:pointer;padding: 1px 10px">Passed tests (クリックで展開)</a>
   </div>
   <div id="passedResultContainer" style="display:none;clear:both;">
-    <table id="PassedResultTable" border="1"></table>
+    <table id="PassedResultTable"></table>
   </div>
   <h3>Failed</h3>
   <!-- Failed -->
   <pre><span id="FailedResult"></span></pre>
   <pre><span id="Notes"></span></pre>
-  <table id="FailedResultTable" border="1"></table>
+  <table id="FailedResultTable"></table>
 
   <h2>このテストの作者</h2>
   <p>
