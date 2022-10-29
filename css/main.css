@@ -1,0 +1,51 @@
+*
+{
+  margin:  0;
+  padding: 0;
+  font-size: 14px;
+  font-family: "メイリオ","Meiryo","Arial","Verdana","ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","Osaka","ＭＳ Ｐゴシック","MS PGothic","Sans-Serif";
+}
+pre, pre *
+{
+  font-family: "ＭＳ ゴシック","MS Gothic","Osaka-等幅",'Osaka-Mono',monospace;
+}
+iframe,p,span,pre,ul,ol,blockquote,table,input
+{
+  margin: 5px 0px 5px 0px;
+}
+ul, ol { padding-left: 20px }
+hr { margin: 0px -10px 0px -10px; }
+h1 { margin: 0px -10px 0px -10px; background-color: #FBF; font-size: 130%; padding-left:  8px; font-weight: bold;   }
+h2 { margin: 0px -10px 0px -10px; background-color: #FFB; font-size: 120%; padding-left: 12px; font-weight: normal; }
+
+table
+{
+  border-collapse: collapse;  border-spacing: 0;
+}
+th { background:#B0D4E5; }
+th, td { padding: 0 0.5em 0 0.5em; border:1px solid black; }
+body {
+  margin: auto;
+  max-width: 1024px;
+  min-width: 400px;
+  background-color: #B0D4E5;
+}
+#container
+{
+  padding: 0px 10px 0px 10px;
+  background-color: white;
+}
+
+strong {
+  color: red;
+}
+input[type="button"]{
+  margin: 10px;
+  padding: 0px 5px;
+  background-color: #FDF;
+  border-radius: 10px;
+}
+
+button {
+  bore
+}
