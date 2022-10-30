@@ -22,36 +22,43 @@ th, td {
 </head>
 
 <body>
-<div id="container">
+<div id="contents">
   <h1>もしかしてサイトスワップのテスト</h1>
 
   <h2>概要</h2>
-  <p>
-  ※このページは開発者向けのページです。<br>
-  <a href="./index.html">もしかしてサイトスワップ</a> 用のJavaScriptのテストです。<br>
-  ページの読み込み時に、自動的にテストが実行されます。
-  </p>
+  <div class="inner">
+    <p>
+    ※このページは開発者向けのページです。<br>
+    <a href="./index.html">もしかしてサイトスワップ</a> 用のJavaScriptのテストです。<br>
+    ページの読み込み時に、自動的にテストが実行されます。
+    </p>
+  </div>
 
   <h2>テスト結果</h2>
   <h3>Passed</h3>
-  <!-- Passed -->
-  <pre><span id="PassedResult"></span></pre>
-  <div onclick="obj=document.getElementById('passedResultContainer').style; obj.display=(obj.display=='none')?'block':'none';">
-    <a style="color:#fff; background-color:#999; cursor:pointer;padding: 1px 10px">Passed tests (クリックで展開)</a>
+  <div class="inner">
+    <pre><span id="PassedResult"></span></pre>
+    <div onclick="obj=document.getElementById('passedResultContainer').style; obj.display=(obj.display=='none')?'block':'none';">
+      <a style="color:#fff; background-color:#999; cursor:pointer;padding: 1px 10px">Passed tests (クリックで展開)</a>
+    </div>
+    <div id="passedResultContainer" style="display:none;clear:both;">
+      <table id="PassedResultTable"></table>
+    </div>
   </div>
-  <div id="passedResultContainer" style="display:none;clear:both;">
-    <table id="PassedResultTable"></table>
-  </div>
+
   <h3>Failed</h3>
-  <!-- Failed -->
-  <pre><span id="FailedResult"></span></pre>
-  <pre><span id="Notes"></span></pre>
-  <table id="FailedResultTable"></table>
+  <div class="inner">
+    <pre><span id="FailedResult"></span></pre>
+    <pre><span id="Notes"></span></pre>
+    <table id="FailedResultTable"></table>
+  </div>
 
   <h2>このテストの作者</h2>
-  <p>
-  Tatt(たっと) <a href="https://twitter.com/tatt61880">@tatt61880</a>
-  </p>
+  <div class="inner">
+    <p>
+      Tatt(たっと) <a href="https://twitter.com/tatt61880">@tatt61880</a>
+    </p>
+  </div>
 </div>
 </body>
 </html>
