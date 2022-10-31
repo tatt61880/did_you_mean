@@ -12,7 +12,7 @@
       const siteswapStr = elemSiteswapInput.value;
       location.href = location.href.split('?')[0] + '?ss=' + siteswapStr;
       search(siteswapStr);
-    };
+    }
 
     const paravalsStr = location.href.split('?')[1];
     if (paravalsStr === undefined) return;

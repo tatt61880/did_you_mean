@@ -1,13 +1,13 @@
 html {
-  margin: 0;
   padding: 0;
+  margin: 0;
   font-size: 14px;
 }
 
 body {
-  margin: 0 auto;
-  max-width: 1024px;
   min-width: 400px;
+  max-width: 1024px;
+  margin: 0 auto;
   background-color: #ccffff;
 }
 
@@ -34,32 +34,32 @@ hr {
 }
 
 h1 {
-  margin: 0;
   padding-left: 8px;
-  background-color: #ffbbff;
+  margin: 0;
   font-size: 1.3rem;
   font-weight: bold;
+  background-color: #ffbbff;
 }
 
 h2 {
-  margin: 0;
   padding-left: 12px;
-  background-color: #ffffbb;
+  margin: 0;
   font-size: 1.2rem;
   font-weight: bold;
+  background-color: #ffffbb;
 }
 
 h3 {
-  margin: 0;
   padding-left: 12px;
-  background-color: #bbffbb;
+  margin: 0;
   font-size: 1.2rem;
   font-weight: normal;
+  background-color: #bbffbb;
 }
 
 table {
-  border-collapse: collapse;
   border-spacing: 0;
+  border-collapse: collapse;
 }
 
 th {
@@ -77,14 +77,14 @@ strong {
 }
 
 button {
-  margin: 10px;
   padding: 5px 10px;
+  margin: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
   color: #338833;
   background-color: #ddffdd;
   border: 3px solid #338833;
   border-radius: 15px;
-  font-weight: bold;
-  font-size: 1.2rem;
 }
 
 #siteswap {
