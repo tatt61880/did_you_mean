@@ -42,7 +42,7 @@ function StrToArr(str) {
 
 // ジャグリング可能なサイトスワップになっているか否かを判定する。※引数は文字列ではなく、数字の配列。
 function IsJugglable(arr) {
-  if (arr.length == 0) {
+  if (arr.length === 0) {
     return false;
   }
   const checkArr = new Array(arr.length);
@@ -51,7 +51,7 @@ function IsJugglable(arr) {
       return false;
     }
     const index = (arr[i] + i) % arr.length;
-    if (checkArr[index] != null) {
+    if (checkArr[index] !== undefined) {
       return false;
     } else {
       checkArr[index] = 1;
@@ -97,7 +97,7 @@ function ListupDidYouMean(pat) {
     }
   })();
 
-  if (sum % pat.length == 0) {
+  if (sum % pat.length === 0) {
     (function() { // Swap two elements
       // e.g. 7351 => 1357, 7531
       for (let i = 0; i < pat.length; i++) {
@@ -180,7 +180,7 @@ function ListupDidYouMean(pat) {
 
   (function() { // Insert one element (element <= average)
     // e.g. 551 => 5151, 5511 (1 < average)
-    // e.g. 135 => 1353 (3 == average)
+    // e.g. 135 => 1353 (3 === average)
     const validSum = average * (pat.length + 1);
     const insertValue = validSum - sum;
     for (let i = 1; i <= pat.length; i++) {
@@ -206,7 +206,7 @@ function DidYouMean(ss) { // eslint-disable-line no-unused-vars
 
   const inputStr = ss;
 
-  if (ss == '') {
+  if (ss === '') {
     resultSpan.appendChild(document.createTextNode(inputStr + '何か入力してください。'));
     return;
   }
@@ -223,7 +223,7 @@ function DidYouMean(ss) { // eslint-disable-line no-unused-vars
     let ssList = ListupDidYouMean(pat);
 
     // output
-    if (ssList.length == 0) {
+    if (ssList.length === 0) {
       resultSpan.appendChild(document.createTextNode('「' + inputStr + '」はジャグリング不可能な文字列です。\n(似た文字列にもジャグリング可能な物はありません。)'));
     } else {
       resultSpan.appendChild(document.createTextNode('入力文字列: ' + inputStr + '\nもしかして: (下表をご参照ください) \n'));
@@ -245,7 +245,7 @@ function DidYouMean(ss) { // eslint-disable-line no-unused-vars
         const method = siteswapArray[0];
         const siteswap = ArrToStr(siteswapArray[1]);
         const num = ave(siteswapArray[1]);
-        if (last != siteswap && !siteswap.match(/</)) { // 「<z+α>」が含まれると、JavaScript版JuggleMasterへのリンクが正常にならないため、省きます。
+        if (last !== siteswap && !siteswap.match(/</)) { // 「<z+α>」が含まれると、JavaScript版JuggleMasterへのリンクが正常にならないため、省きます。
           last = siteswap;
           const row = table.insertRow();
           row.insertCell().appendChild(document.createTextNode(siteswap));

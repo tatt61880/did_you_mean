@@ -12,7 +12,7 @@
 
   Array.prototype.equals = function(arr) {
     if (arr instanceof Array) {
-      if (this.length != arr.length) {
+      if (this.length !== arr.length) {
         return false;
       }
       let f = true;
@@ -20,9 +20,9 @@
         if (this[i] instanceof Array) {
           f = this[i].equals(arr[i]);
         } else {
-          f = this[i] == arr[i];
+          f = this[i] === arr[i];
         }
-        if (f == false) break;
+        if (f === false) break;
       }
       return f;
     } else {
@@ -36,13 +36,13 @@
       if (this[i] instanceof Array) {
         str += this[i].ToStr();
       } else {
-        if (typeof(this[i]) == 'string') {
+        if (typeof(this[i]) === 'string') {
           str += '"' + this[i] + '"';
         } else {
           str += this[i];
         }
       }
-      if (i != this.length - 1) str += ',';
+      if (i !== this.length - 1) str += ',';
     }
     str += ']';
     return str;
@@ -125,7 +125,7 @@
     TestIsSiteswap();
     TestDidYouMean();
 
-    if (failedCount == 0) {
+    if (failedCount === 0) {
       const notesSpan = document.getElementById('Notes');
       notesSpan.appendChild(document.createTextNode('Passed all ' + passedCount + ' tests!'));
       failedTable.deleteRow(0);

@@ -19,7 +19,7 @@
 
     for (const paravals of paravalsStr.split('&')) {
       const paraval = paravals.split('=');
-      if (paraval[0] == 'ss') {
+      if (paraval[0] === 'ss') {
         const siteswapStr = paraval[1];
         elemSiteswapInput.value = siteswapStr;
         search(siteswapStr);
