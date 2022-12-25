@@ -1,7 +1,7 @@
-(function() {
+(function () {
   'use strict';
 
-  window.addEventListener('DOMContentLoaded', function() {
+  window.addEventListener('DOMContentLoaded', function () {
     const elemSearch = document.getElementById('search');
     const elemSiteswapInput = document.getElementById('siteswap');
 

@@ -1,5 +1,5 @@
 // シンプルな(多重配列でない)配列を、cloneメソッドでコピーできるようにする。
-Array.prototype.clone = function() {
+Array.prototype.clone = function () {
   return Array.apply(null, this);
 };
 
@@ -33,7 +33,7 @@ function StrToArr(str) {
       arr.push(str[i].charCodeAt() - ('a').charCodeAt() + 10);
     } else {
       alert('入力可能な文字は、0～9と、a～zです。');
-      //alert("Error in StrToArr(): str[" + i + "] = " + str[i]);
+      // alert("Error in StrToArr(): str[" + i + "] = " + str[i]);
       return '';
     }
   }
@@ -47,7 +47,7 @@ function IsJugglable(arr) {
   }
   const checkArr = new Array(arr.length);
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i] < 0) { //負の数が入っているものは「ジャグリング不可」とする。
+    if (arr[i] < 0) { // 負の数が入っているものは「ジャグリング不可」とする。
       return false;
     }
     const index = (arr[i] + i) % arr.length;
@@ -86,7 +86,7 @@ function ListupDidYouMean(pat) {
   }
   const average = ~~(sum / pat.length);
 
-  (function() { // Remove one element
+  (function () { // Remove one element
     // e.g. 551 => 55, 51
     for (let i = 0; i < pat.length; i++) {
       const trialPat = pat.clone();
@@ -98,7 +98,7 @@ function ListupDidYouMean(pat) {
   })();
 
   if (sum % pat.length === 0) {
-    (function() { // Swap two elements
+    (function () { // Swap two elements
       // e.g. 7351 => 1357, 7531
       for (let i = 0; i < pat.length; i++) {
         for (let j = i + 1; j < pat.length; j++) {
@@ -111,12 +111,12 @@ function ListupDidYouMean(pat) {
         }
       }
     })();
-    (function() { // Move one element
+    (function () { // Move one element
       // e.g. 5371 => 7531
       for (let i = 0; i < pat.length; i++) { // move element index-i to index-j
         for (let j = 0; j < pat.length - 1; j++) {
           if (j < i - 1) {
-            (function() {
+            (function () {
               const trialPat = new Array();
               Array.prototype.push.apply(trialPat, pat.slice(0, j));
               trialPat[j] = pat[i];
@@ -127,7 +127,7 @@ function ListupDidYouMean(pat) {
               }
             })();
           } else if (j > i + 1) {
-            (function() {
+            (function () {
               const trialPat = new Array();
               Array.prototype.push.apply(trialPat, pat.slice(0, i));
               Array.prototype.push.apply(trialPat, pat.slice(i + 1, j + 1));
@@ -142,7 +142,7 @@ function ListupDidYouMean(pat) {
       }
     })();
   } else {
-    (function() { // Change one element
+    (function () { // Change one element
       const diff1 = (sum % pat.length); // (large -> small) e.g. 551 => 531
       const diff2 = pat.length - (sum % pat.length); // (small -> large) e.g. 551 => 561, 552
       for (let i = 0; i < pat.length; i++) {
@@ -162,7 +162,7 @@ function ListupDidYouMean(pat) {
         }
       }
     })();
-    (function() { // Insert one element (>average)
+    (function () { // Insert one element (>average)
       // e.g. 551 => 5551
       const validSum = (average + 1) * (pat.length + 1);
       const insertValue = validSum - sum;
@@ -178,7 +178,7 @@ function ListupDidYouMean(pat) {
     })();
   }
 
-  (function() { // Insert one element (element <= average)
+  (function () { // Insert one element (element <= average)
     // e.g. 551 => 5151, 5511 (1 < average)
     // e.g. 135 => 1353 (3 === average)
     const validSum = average * (pat.length + 1);
@@ -241,7 +241,7 @@ function DidYouMean(ss) { // eslint-disable-line no-unused-vars
 
       ssList = ssList.sort();
       let last = '';
-      ssList.forEach(function(siteswapArray) {
+      ssList.forEach(function (siteswapArray) {
         const method = siteswapArray[0];
         const siteswap = ArrToStr(siteswapArray[1]);
         const num = ave(siteswapArray[1]);

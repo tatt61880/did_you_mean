@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   let passedCount = 0;
@@ -6,11 +6,11 @@
   let passedTable;
   let failedTable;
 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     TestAll();
   });
 
-  Array.prototype.equals = function(arr) {
+  Array.prototype.equals = function (arr) {
     if (arr instanceof Array) {
       if (this.length !== arr.length) {
         return false;
@@ -30,7 +30,7 @@
     }
   };
 
-  Array.prototype.ToStr = function() {
+  Array.prototype.ToStr = function () {
     let str = '[';
     for (let i = 0; i < this.length; ++i) {
       if (this[i] instanceof Array) {
@@ -71,9 +71,6 @@
   }
 
   function assertDidYouMean(SS, exp) {
-    //console.log('.');
-    //console.assert(actual.equals(expected), '\nact: ' + actual.ToStr() + '\nexp: ' + expected.ToStr());
-
     const actual = ListupDidYouMean(StrToArr(SS)).sort().ToStr(); // eslint-disable-line no-undef
     const expected = exp.sort().ToStr();
     PrintResult('ListupDidYouMean', 'StrToArr("' + SS + '")', actual, expected);
