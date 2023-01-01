@@ -7,7 +7,7 @@
   let failedTable;
 
   document.addEventListener('DOMContentLoaded', function () {
-    TestAll();
+    testAll();
   });
 
   Array.prototype.equals = function (arr) {
@@ -30,11 +30,11 @@
     }
   };
 
-  Array.prototype.ToStr = function () {
+  Array.prototype.toStr = function () {
     let str = '[';
     for (let i = 0; i < this.length; ++i) {
       if (this[i] instanceof Array) {
-        str += this[i].ToStr();
+        str += this[i].toStr();
       } else {
         if (typeof(this[i]) === 'string') {
           str += '"' + this[i] + '"';
@@ -48,7 +48,7 @@
     return str;
   };
 
-  function PrintResult(functionName, parameters, actual, expected) {
+  function printResult(functionName, parameters, actual, expected) {
     if (actual === expected) {
       passedCount++;
       const row = passedTable.insertRow();
@@ -65,42 +65,43 @@
     }
   }
 
-  function assertIsJugglable(SS, exp) {
-    const actual = IsJugglable(StrToArr(SS)); // eslint-disable-line no-undef
-    PrintResult('IsJugglable', 'StrToArr("' + SS + '")', actual, exp);
+  function assertisJugglable(SS, exp) {
+    const actual = isJugglable(strToArr(SS)); // eslint-disable-line no-undef
+    printResult('isJugglable', 'strToArr("' + SS + '")', actual, exp);
   }
 
   function assertDidYouMean(SS, exp) {
-    const actual = ListupDidYouMean(StrToArr(SS)).sort().ToStr(); // eslint-disable-line no-undef
-    const expected = exp.sort().ToStr();
-    PrintResult('ListupDidYouMean', 'StrToArr("' + SS + '")', actual, expected);
+    const actual = listupDidYouMean(strToArr(SS)).sort() // eslint-disable-line no-undef
+      .toStr(); // eslint-disable-line no-undef
+    const expected = exp.sort().toStr();
+    printResult('listupDidYouMean', 'strToArr("' + SS + '")', actual, expected);
   }
 
-  function TestIsSiteswap() {
-    assertIsJugglable('0', true);
-    assertIsJugglable('1', true);
-    assertIsJugglable('2', true);
-    assertIsJugglable('a', true);
-    assertIsJugglable('10', false);
-    assertIsJugglable('11', true);
-    assertIsJugglable('531', true);
-    assertIsJugglable('551', false);
-    assertIsJugglable('7441', true);
-    assertIsJugglable('db97531', true);
-    assertIsJugglable('31416', true);
-    assertIsJugglable('3141592', false);
-    assertIsJugglable('siteswap', false);
-    assertIsJugglable('siteawsp', true);
-    assertIsJugglable('sitaeswp', true);
+  function testIsSiteswap() {
+    assertisJugglable('0', true);
+    assertisJugglable('1', true);
+    assertisJugglable('2', true);
+    assertisJugglable('a', true);
+    assertisJugglable('10', false);
+    assertisJugglable('11', true);
+    assertisJugglable('531', true);
+    assertisJugglable('551', false);
+    assertisJugglable('7441', true);
+    assertisJugglable('db97531', true);
+    assertisJugglable('31416', true);
+    assertisJugglable('3141592', false);
+    assertisJugglable('siteswap', false);
+    assertisJugglable('siteawsp', true);
+    assertisJugglable('sitaeswp', true);
   }
 
-  function TestDidYouMean() {
+  function testDidYouMean() {
     assertDidYouMean('7351', [[TYPE.SWAP, [1, 3, 5, 7]], [TYPE.SWAP, [7, 5, 3, 1]], [TYPE.MOVE, [3, 5, 7, 1]], [TYPE.MOVE, [7, 1, 3, 5]], [TYPE.INSERT, [7, 3, 4, 5, 1]]]); // eslint-disable-line no-undef
     assertDidYouMean('siteswap', [[TYPE.MOVE, [28, 18, 29, 10, 14, 28, 32, 25]], [TYPE.SWAP, [28, 18, 29, 14, 10, 32, 28, 25]]]); // eslint-disable-line no-undef
     assertDidYouMean('551', [['1字削除', [5, 1]], ['1字削除', [5, 5]], ['1字変更', [5, 3, 1]], ['1字変更', [5, 5, 2]], ['1字変更', [5, 6, 1]], ['1字追加', [5, 1, 5, 1]], ['1字追加', [5, 5, 1, 1]], ['1字追加', [5, 5, 1, 5]], ['1字追加', [5, 5, 5, 1]]]); // eslint-disable-line no-undef
   }
 
-  function TestAll() {
+  function testAll() {
     passedTable = document.getElementById('PassedResultTable');
     failedTable = document.getElementById('FailedResultTable');
 
@@ -119,8 +120,8 @@
       tr.appendChild(createTh('Expected'));
     }
 
-    TestIsSiteswap();
-    TestDidYouMean();
+    testIsSiteswap();
+    testDidYouMean();
 
     if (failedCount === 0) {
       const notesSpan = document.getElementById('Notes');

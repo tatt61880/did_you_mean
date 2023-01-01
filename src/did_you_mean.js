@@ -3,11 +3,11 @@ Array.prototype.clone = function () {
   return Array.apply(null, this);
 };
 
-function ArrToStr(arr) {
+function arrToStr(arr) {
   let str = '';
   for (let i = 0; i < arr.length; i++) {
     if (!(typeof arr[i] === 'number')) {
-      alert('Error in ArrToStr(): arr[' + i + '] isn\'t a number. ' + arr[i]);
+      alert('Error in arrToStr(): arr[' + i + '] isn\'t a number. ' + arr[i]);
       return '';
     }
     if (0 <= arr[i] && arr[i] <= 9) {
@@ -17,14 +17,14 @@ function ArrToStr(arr) {
     } else if (36 <= arr[i]) {
       str += '<z+' + (arr[i] - 35) + '>';
     } else {
-      alert('Error in ArrToStr(): arr[' + i + '] = ' + arr[i]);
+      alert('Error in arrToStr(): arr[' + i + '] = ' + arr[i]);
       return '';
     }
   }
   return str;
 }
 
-function StrToArr(str) {
+function strToArr(str) {
   const arr = new Array();
   for (let i = 0; i < str.length; i++) {
     if ('0' <= str[i] && str[i] <= '9') {
@@ -33,7 +33,7 @@ function StrToArr(str) {
       arr.push(str[i].charCodeAt() - ('a').charCodeAt() + 10);
     } else {
       alert('入力可能な文字は、0～9と、a～zです。');
-      // alert("Error in StrToArr(): str[" + i + "] = " + str[i]);
+      // alert("Error in strToArr(): str[" + i + "] = " + str[i]);
       return '';
     }
   }
@@ -41,7 +41,7 @@ function StrToArr(str) {
 }
 
 // ジャグリング可能なサイトスワップになっているか否かを判定する。※引数は文字列ではなく、数字の配列。
-function IsJugglable(arr) {
+function isJugglable(arr) {
   if (arr.length === 0) {
     return false;
   }
@@ -76,7 +76,7 @@ const TYPE = {
   SWAP: '2字交換',
 };
 
-function ListupDidYouMean(pat) {
+function listupDidYouMean(pat) {
   const ssList = new Array();
 
   // TODO: Dealing Mulitplex and/or Sync patterns
@@ -91,7 +91,7 @@ function ListupDidYouMean(pat) {
     for (let i = 0; i < pat.length; i++) {
       const trialPat = pat.clone();
       trialPat.splice(i, 1);
-      if (IsJugglable(trialPat)) {
+      if (isJugglable(trialPat)) {
         ssList.push([TYPE.REMOVE, trialPat]);
       }
     }
@@ -105,7 +105,7 @@ function ListupDidYouMean(pat) {
           const trialPat = pat.clone();
           trialPat[i] = pat[j];
           trialPat[j] = pat[i];
-          if (IsJugglable(trialPat)) {
+          if (isJugglable(trialPat)) {
             ssList.push([TYPE.SWAP, trialPat]);
           }
         }
@@ -122,7 +122,7 @@ function ListupDidYouMean(pat) {
               trialPat[j] = pat[i];
               Array.prototype.push.apply(trialPat, pat.slice(j, i));
               Array.prototype.push.apply(trialPat, pat.slice(i + 1, pat.length));
-              if (IsJugglable(trialPat)) {
+              if (isJugglable(trialPat)) {
                 ssList.push([TYPE.MOVE, trialPat]);
               }
             })();
@@ -133,7 +133,7 @@ function ListupDidYouMean(pat) {
               Array.prototype.push.apply(trialPat, pat.slice(i + 1, j + 1));
               trialPat[j] = pat[i];
               Array.prototype.push.apply(trialPat, pat.slice(j + 1, pat.length));
-              if (IsJugglable(trialPat)) {
+              if (isJugglable(trialPat)) {
                 ssList.push([TYPE.MOVE, trialPat]);
               }
             })();
@@ -149,14 +149,14 @@ function ListupDidYouMean(pat) {
         {
           const trialPat = pat.clone();
           trialPat[i] = pat[i] - diff1;
-          if (IsJugglable(trialPat)) {
+          if (isJugglable(trialPat)) {
             ssList.push([TYPE.CHANGE, trialPat]);
           }
         }
         {
           const trialPat = pat.clone();
           trialPat[i] = pat[i] + diff2;
-          if (IsJugglable(trialPat)) {
+          if (isJugglable(trialPat)) {
             ssList.push([TYPE.CHANGE, trialPat]);
           }
         }
@@ -171,7 +171,7 @@ function ListupDidYouMean(pat) {
         Array.prototype.push.apply(trialPat, pat.slice(0, i));
         trialPat[i] = insertValue;
         Array.prototype.push.apply(trialPat, pat.slice(i, pat.length));
-        if (IsJugglable(trialPat)) {
+        if (isJugglable(trialPat)) {
           ssList.push([TYPE.INSERT, trialPat]);
         }
       }
@@ -188,7 +188,7 @@ function ListupDidYouMean(pat) {
       Array.prototype.push.apply(trialPat, pat.slice(0, i));
       trialPat[i] = insertValue;
       Array.prototype.push.apply(trialPat, pat.slice(i, pat.length));
-      if (IsJugglable(trialPat)) {
+      if (isJugglable(trialPat)) {
         ssList.push([TYPE.INSERT, trialPat]);
       }
     }
@@ -200,7 +200,7 @@ function ListupDidYouMean(pat) {
 const jmjsURL = 'http://yuji-k64613.github.io/jmjs/jmjs.html';
 
 // もしかして機能
-function DidYouMean(ss) { // eslint-disable-line no-unused-vars
+function didYouMean(ss) { // eslint-disable-line no-unused-vars
   const resultSpan = document.getElementById('resultSpan');
   resultSpan.innerHTML = '';
 
@@ -210,9 +210,9 @@ function DidYouMean(ss) { // eslint-disable-line no-unused-vars
     resultSpan.appendChild(document.createTextNode(inputStr + '何か入力してください。'));
     return;
   }
-  const pat = StrToArr(inputStr);
+  const pat = strToArr(inputStr);
 
-  if (IsJugglable(pat)) {
+  if (isJugglable(pat)) {
     resultSpan.appendChild(document.createTextNode('「'));
     const link = document.createElement('a');
     link.href = jmjsURL + '?siteswap=' + inputStr;
@@ -220,7 +220,7 @@ function DidYouMean(ss) { // eslint-disable-line no-unused-vars
     resultSpan.appendChild(link);
     resultSpan.appendChild(document.createTextNode('」はジャグリング可能な文字列です。←@yuji_k64613さんが作成した、JuggleMaster JavaScript版へのリンクです。'));
   } else {
-    let ssList = ListupDidYouMean(pat);
+    let ssList = listupDidYouMean(pat);
 
     // output
     if (ssList.length === 0) {
@@ -243,7 +243,7 @@ function DidYouMean(ss) { // eslint-disable-line no-unused-vars
       let last = '';
       ssList.forEach(function (siteswapArray) {
         const method = siteswapArray[0];
-        const siteswap = ArrToStr(siteswapArray[1]);
+        const siteswap = arrToStr(siteswapArray[1]);
         const num = ave(siteswapArray[1]);
         if (last !== siteswap && !siteswap.match(/</)) { // 「<z+α>」が含まれると、JavaScript版JuggleMasterへのリンクが正常にならないため、省きます。
           last = siteswap;
