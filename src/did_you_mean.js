@@ -201,7 +201,7 @@ const jmjsURL = 'http://yuji-k64613.github.io/jmjs/jmjs.html';
 
 // もしかして機能
 function didYouMean(ss) { // eslint-disable-line no-unused-vars
-  const resultSpan = document.getElementById('resultSpan');
+  const resultSpan = document.getElementById('result-span');
   resultSpan.innerHTML = '';
 
   const inputStr = ss;
@@ -227,7 +227,7 @@ function didYouMean(ss) { // eslint-disable-line no-unused-vars
       resultSpan.appendChild(document.createTextNode('「' + inputStr + '」はジャグリング不可能な文字列です。\n(似た文字列にもジャグリング可能な物はありません。)'));
     } else {
       resultSpan.appendChild(document.createTextNode('入力文字列: ' + inputStr + '\nもしかして: (下表をご参照ください) \n'));
-      const table = document.getElementById('resultTable');
+      const table = document.getElementById('result-table');
       table.innerHTML = '';
 
       // ヘッダー部を追加
@@ -236,7 +236,7 @@ function didYouMean(ss) { // eslint-disable-line no-unused-vars
         tr.appendChild(createTh('Siteswap'));
         tr.appendChild(createTh('ボールの数'));
         tr.appendChild(createTh('入力文字列との関係'));
-        tr.appendChild(createTh('@yuji_k64613さんが作成した、JuggleMaster JavaScript版へのリンク。'));
+        tr.appendChild(createTh('@yuji_k64613さんが作成した JuggleMaster JavaScript版 へのリンク'));
       }
 
       ssList = ssList.sort();

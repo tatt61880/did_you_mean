@@ -92,5 +92,10 @@ button {
 }
 
 #siteswap {
+  width: 50%;
+  font-size: 1.5rem;
+}
+
+#result-table {
   font-size: 1.2rem;
 }
