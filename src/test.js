@@ -38,7 +38,7 @@
       if (this[i] instanceof Array) {
         str += this[i].toStr();
       } else {
-        if (typeof(this[i]) === 'string') {
+        if (typeof this[i] === 'string') {
           str += '"' + this[i] + '"';
         } else {
           str += this[i];
@@ -73,8 +73,7 @@
   }
 
   function assertDidYouMean(SS, exp) {
-    const actual = window.listupDidYouMean(window.strToArr(SS)).sort()
-      .toStr();
+    const actual = window.listupDidYouMean(window.strToArr(SS)).sort().toStr();
     const expected = exp.sort().toStr();
     printResult('listupDidYouMean', 'strToArr("' + SS + '")', actual, expected);
   }
@@ -98,9 +97,28 @@
   }
 
   function testDidYouMean() {
-    assertDidYouMean('7351', [[TYPE.SWAP, [1, 3, 5, 7]], [TYPE.SWAP, [7, 5, 3, 1]], [TYPE.MOVE, [3, 5, 7, 1]], [TYPE.MOVE, [7, 1, 3, 5]], [TYPE.INSERT, [7, 3, 4, 5, 1]]]);
-    assertDidYouMean('siteswap', [[TYPE.MOVE, [28, 18, 29, 10, 14, 28, 32, 25]], [TYPE.SWAP, [28, 18, 29, 14, 10, 32, 28, 25]]]);
-    assertDidYouMean('551', [['1字削除', [5, 1]], ['1字削除', [5, 5]], ['1字変更', [5, 3, 1]], ['1字変更', [5, 5, 2]], ['1字変更', [5, 6, 1]], ['1字追加', [5, 1, 5, 1]], ['1字追加', [5, 5, 1, 1]], ['1字追加', [5, 5, 1, 5]], ['1字追加', [5, 5, 5, 1]]]);
+    assertDidYouMean('7351', [
+      [TYPE.SWAP, [1, 3, 5, 7]],
+      [TYPE.SWAP, [7, 5, 3, 1]],
+      [TYPE.MOVE, [3, 5, 7, 1]],
+      [TYPE.MOVE, [7, 1, 3, 5]],
+      [TYPE.INSERT, [7, 3, 4, 5, 1]],
+    ]);
+    assertDidYouMean('siteswap', [
+      [TYPE.MOVE, [28, 18, 29, 10, 14, 28, 32, 25]],
+      [TYPE.SWAP, [28, 18, 29, 14, 10, 32, 28, 25]],
+    ]);
+    assertDidYouMean('551', [
+      ['1字削除', [5, 1]],
+      ['1字削除', [5, 5]],
+      ['1字変更', [5, 3, 1]],
+      ['1字変更', [5, 5, 2]],
+      ['1字変更', [5, 6, 1]],
+      ['1字追加', [5, 1, 5, 1]],
+      ['1字追加', [5, 5, 1, 1]],
+      ['1字追加', [5, 5, 1, 5]],
+      ['1字追加', [5, 5, 5, 1]],
+    ]);
   }
 
   function testAll() {
@@ -127,15 +145,23 @@
 
     if (failedCount === 0) {
       const notesSpan = document.getElementById('Notes');
-      notesSpan.appendChild(document.createTextNode('Passed all ' + passedCount + ' tests!'));
+      notesSpan.appendChild(
+        document.createTextNode('Passed all ' + passedCount + ' tests!')
+      );
       failedTable.deleteRow(0);
     } else {
       const passedSpan = document.getElementById('PassedResult');
-      passedSpan.appendChild(document.createTextNode('Passed ' + passedCount + ' tests.'));
+      passedSpan.appendChild(
+        document.createTextNode('Passed ' + passedCount + ' tests.')
+      );
       const failedSpan = document.getElementById('FailedResult');
-      failedSpan.appendChild(document.createTextNode('Failed ' + failedCount + ' tests.'));
+      failedSpan.appendChild(
+        document.createTextNode('Failed ' + failedCount + ' tests.')
+      );
       const notesSpan = document.getElementById('Notes');
-      notesSpan.appendChild(document.createTextNode('There are failed tests below.'));
+      notesSpan.appendChild(
+        document.createTextNode('There are failed tests below.')
+      );
     }
   }
 
