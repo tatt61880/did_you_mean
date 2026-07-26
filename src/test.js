@@ -83,7 +83,8 @@
   }
 
   function assertDidYouMean(SS, exp) {
-    const actual = window.listupDidYouMean(window.strToArr(SS))
+    const actual = window //
+      .listupDidYouMean(window.strToArr(SS))
       .sort()
       .toStr();
     const expected = exp.sort().toStr();
