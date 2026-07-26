@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <title>もしかしてサイトスワップのテスト</title>
   <meta charset="UTF-8">
@@ -8,13 +9,15 @@
 
   <link rel="stylesheet" href="./css/main.css?2026.07.25">
   <style>
-strong {
-  color: red;
-}
-th, td {
-  border: 1px solid gray;
-  padding: 5px 10px;
-}
+    strong {
+      color: red;
+    }
+
+    th,
+    td {
+      border: 1px solid gray;
+      padding: 5px 10px;
+    }
   </style>
 
   <script defer src="./src/did_you_mean.js?2026.07.25"></script>
@@ -22,43 +25,45 @@ th, td {
 </head>
 
 <body>
-<div id="contents">
-  <h1>もしかしてサイトスワップのテスト</h1>
+  <div id="contents">
+    <h1>もしかしてサイトスワップのテスト</h1>
 
-  <h2>概要</h2>
-  <div class="inner">
-    <p>
-    ※このページは開発者向けのページです。<br>
-    <a href="./index.html">もしかしてサイトスワップ</a> 用のJavaScriptのテストです。<br>
-    ページの読み込み時に、自動的にテストが実行されます。
-    </p>
-  </div>
-
-  <h2>テスト結果</h2>
-  <h3>Passed</h3>
-  <div class="inner">
-    <pre><span id="PassedResult"></span></pre>
-    <div onclick="obj=document.getElementById('passedResultContainer').style; obj.display=(obj.display=='none')?'block':'none';">
-      <a style="color:#fff; background-color:#999; cursor:pointer;padding: 1px 10px">Passed tests (クリックで展開)</a>
+    <h2>概要</h2>
+    <div class="inner">
+      <p>
+        ※このページは開発者向けのページです。<br>
+        <a href="./index.html">もしかしてサイトスワップ</a> 用のJavaScriptのテストです。<br>
+        ページの読み込み時に、自動的にテストが実行されます。
+      </p>
     </div>
-    <div id="passedResultContainer" style="display:none;clear:both;">
-      <table id="PassedResultTable"></table>
+
+    <h2>テスト結果</h2>
+    <h3>Passed</h3>
+    <div class="inner">
+      <pre><span id="PassedResult"></span></pre>
+      <div
+        onclick="obj=document.getElementById('passedResultContainer').style; obj.display=(obj.display=='none')?'block':'none';">
+        <a style="color:#fff; background-color:#999; cursor:pointer;padding: 1px 10px">Passed tests (クリックで展開)</a>
+      </div>
+      <div id="passedResultContainer" style="display:none;clear:both;">
+        <table id="PassedResultTable"></table>
+      </div>
+    </div>
+
+    <h3>Failed</h3>
+    <div class="inner">
+      <pre><span id="FailedResult"></span></pre>
+      <pre><span id="Notes"></span></pre>
+      <table id="FailedResultTable"></table>
+    </div>
+
+    <h2>このテストの作者</h2>
+    <div class="inner">
+      <p>
+        Tatt(たっと) <a href="https://x.com/tatt61880">@tatt61880</a>
+      </p>
     </div>
   </div>
-
-  <h3>Failed</h3>
-  <div class="inner">
-    <pre><span id="FailedResult"></span></pre>
-    <pre><span id="Notes"></span></pre>
-    <table id="FailedResultTable"></table>
-  </div>
-
-  <h2>このテストの作者</h2>
-  <div class="inner">
-    <p>
-      Tatt(たっと) <a href="https://x.com/tatt61880">@tatt61880</a>
-    </p>
-  </div>
-</div>
 </body>
+
 </html>
