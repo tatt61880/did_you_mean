@@ -17,15 +17,19 @@
       if (this.length !== arr.length) {
         return false;
       }
+
       let f = true;
+
       for (let i = 0; i < this.length; ++i) {
         if (this[i] instanceof Array) {
           f = this[i].equals(arr[i]);
         } else {
           f = this[i] === arr[i];
         }
+
         if (f === false) break;
       }
+
       return f;
     } else {
       return false;
@@ -34,6 +38,7 @@
 
   Array.prototype.toStr = function () {
     let str = '[';
+
     for (let i = 0; i < this.length; ++i) {
       if (this[i] instanceof Array) {
         str += this[i].toStr();
@@ -44,21 +49,26 @@
           str += this[i];
         }
       }
+
       if (i !== this.length - 1) str += ',';
     }
+
     str += ']';
+
     return str;
   };
 
   function printResult(functionName, parameters, actual, expected) {
     if (actual === expected) {
       passedCount++;
+
       const row = passedTable.insertRow();
       row.insertCell().appendChild(document.createTextNode(functionName));
       row.insertCell().appendChild(document.createTextNode(parameters));
       row.insertCell().appendChild(document.createTextNode(actual));
     } else {
       failedCount++;
+
       const row = failedTable.insertRow();
       row.insertCell().appendChild(document.createTextNode(functionName));
       row.insertCell().appendChild(document.createTextNode(parameters));
@@ -73,8 +83,11 @@
   }
 
   function assertDidYouMean(SS, exp) {
-    const actual = window.listupDidYouMean(window.strToArr(SS)).sort().toStr();
+    const actual = window.listupDidYouMean(window.strToArr(SS))
+      .sort()
+      .toStr();
     const expected = exp.sort().toStr();
+
     printResult('listupDidYouMean', 'strToArr("' + SS + '")', actual, expected);
   }
 
@@ -104,10 +117,12 @@
       [TYPE.MOVE, [7, 1, 3, 5]],
       [TYPE.INSERT, [7, 3, 4, 5, 1]],
     ]);
+
     assertDidYouMean('siteswap', [
       [TYPE.MOVE, [28, 18, 29, 10, 14, 28, 32, 25]],
       [TYPE.SWAP, [28, 18, 29, 14, 10, 32, 28, 25]],
     ]);
+
     assertDidYouMean('551', [
       ['1字削除', [5, 1]],
       ['1字削除', [5, 5]],
@@ -168,6 +183,7 @@
   function createTh(text) {
     const th = document.createElement('th');
     th.innerText = text;
+
     return th;
   }
 })();
