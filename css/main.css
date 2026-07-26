@@ -67,13 +67,15 @@ table {
 }
 
 th {
-  background: #b0d4e5;
+  font-weight: bold;
+  color: #000055;
+  background: #c0cbff;
 }
 
 th,
 td {
   padding: 0 0.5rem;
-  border: 1px solid black;
+  border: 1px solid #9aa6cf;
 }
 
 strong {
