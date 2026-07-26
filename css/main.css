@@ -86,8 +86,9 @@ button {
   font-size: 1.3rem;
   font-weight: bold;
   color: #005500;
+  cursor: pointer;
   background-color: #aaffaa;
-  border: 3px solid #005500;
+  border: 2px solid #005500;
   border-radius: 15px;
 }
 
