@@ -6,6 +6,8 @@
   let passedTable;
   let failedTable;
 
+  const TYPE = window.TYPE;
+
   document.addEventListener('DOMContentLoaded', function () {
     testAll();
   });
@@ -66,13 +68,13 @@
   }
 
   function assertisJugglable(SS, exp) {
-    const actual = isJugglable(strToArr(SS)); // eslint-disable-line no-undef
+    const actual = window.isJugglable(window.strToArr(SS));
     printResult('isJugglable', 'strToArr("' + SS + '")', actual, exp);
   }
 
   function assertDidYouMean(SS, exp) {
-    const actual = listupDidYouMean(strToArr(SS)).sort() // eslint-disable-line no-undef
-      .toStr(); // eslint-disable-line no-undef
+    const actual = window.listupDidYouMean(window.strToArr(SS)).sort()
+      .toStr();
     const expected = exp.sort().toStr();
     printResult('listupDidYouMean', 'strToArr("' + SS + '")', actual, expected);
   }
@@ -96,9 +98,9 @@
   }
 
   function testDidYouMean() {
-    assertDidYouMean('7351', [[TYPE.SWAP, [1, 3, 5, 7]], [TYPE.SWAP, [7, 5, 3, 1]], [TYPE.MOVE, [3, 5, 7, 1]], [TYPE.MOVE, [7, 1, 3, 5]], [TYPE.INSERT, [7, 3, 4, 5, 1]]]); // eslint-disable-line no-undef
-    assertDidYouMean('siteswap', [[TYPE.MOVE, [28, 18, 29, 10, 14, 28, 32, 25]], [TYPE.SWAP, [28, 18, 29, 14, 10, 32, 28, 25]]]); // eslint-disable-line no-undef
-    assertDidYouMean('551', [['1字削除', [5, 1]], ['1字削除', [5, 5]], ['1字変更', [5, 3, 1]], ['1字変更', [5, 5, 2]], ['1字変更', [5, 6, 1]], ['1字追加', [5, 1, 5, 1]], ['1字追加', [5, 5, 1, 1]], ['1字追加', [5, 5, 1, 5]], ['1字追加', [5, 5, 5, 1]]]); // eslint-disable-line no-undef
+    assertDidYouMean('7351', [[TYPE.SWAP, [1, 3, 5, 7]], [TYPE.SWAP, [7, 5, 3, 1]], [TYPE.MOVE, [3, 5, 7, 1]], [TYPE.MOVE, [7, 1, 3, 5]], [TYPE.INSERT, [7, 3, 4, 5, 1]]]);
+    assertDidYouMean('siteswap', [[TYPE.MOVE, [28, 18, 29, 10, 14, 28, 32, 25]], [TYPE.SWAP, [28, 18, 29, 14, 10, 32, 28, 25]]]);
+    assertDidYouMean('551', [['1字削除', [5, 1]], ['1字削除', [5, 5]], ['1字変更', [5, 3, 1]], ['1字変更', [5, 5, 2]], ['1字変更', [5, 6, 1]], ['1字追加', [5, 1, 5, 1]], ['1字追加', [5, 5, 1, 1]], ['1字追加', [5, 5, 1, 5]], ['1字追加', [5, 5, 5, 1]]]);
   }
 
   function testAll() {

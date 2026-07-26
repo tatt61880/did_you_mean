@@ -28,6 +28,6 @@
   });
 
   function search(siteswap) {
-    didYouMean(siteswap); // eslint-disable-line no-undef
+    window.didYouMean(siteswap);
   }
 })();
