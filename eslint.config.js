@@ -52,7 +52,9 @@ module.exports = [
       'key-spacing': 'error',
       'keyword-spacing': 'error',
       'new-cap': 'error',
-      'newline-per-chained-call': ['error', { ignoreChainWithDepth: 2 }],
+      'newline-per-chained-call': [
+        'error', { ignoreChainWithDepth: 2 }
+      ],
       'no-console': 'off',
       'no-constant-condition': ['error', { checkLoops: false }],
       'no-empty': ['error', { allowEmptyCatch: true }],
