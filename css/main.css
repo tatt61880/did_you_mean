@@ -76,6 +76,14 @@ a {
   text-underline-offset: 0.15em;
 }
 
+a[href^="http://"]::after,
+a[href^="https://"]::after {
+  display: inline-block;
+  margin-left: 0.15em;
+  font-size: 0.75em;
+  content: "↗";
+}
+
 strong {
   color: #af2434;
 }
