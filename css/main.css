@@ -214,8 +214,16 @@ code {
   overflow-wrap: anywhere;
 }
 
+#result-table {
+  width: auto;
+  max-width: 100%;
+}
+
+#result-table th:nth-child(2) {
+  width: 5em;
+}
+
 #result-table td:first-child {
-  min-width: 7em;
   max-width: 20em;
 }
 
@@ -286,6 +294,7 @@ summary {
   }
 
   #result-table {
+    width: 100%;
     table-layout: fixed;
   }
 
