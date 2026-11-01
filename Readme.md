@@ -25,4 +25,5 @@
 ## 開発
 
 [ブラウザーで実行するテストページ](https://tatt61880.github.io/did_you_mean/test.html)を用意しています。
+
 テスト・静的検査のコマンドや依存関係は、[package.json](package.json)を参照してください。
