@@ -116,6 +116,14 @@ label {
   margin-top: 12px;
 }
 
+.example-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-top: 10px;
+}
+
 .share-actions {
   margin-top: 16px;
 }
@@ -137,13 +145,18 @@ button:disabled {
   opacity: 0.5;
 }
 
+.example-actions button {
+  padding: 6px 8px;
+  font-size: 0.875rem;
+  font-weight: normal;
+}
+
 button:hover:not(:disabled) {
   background-color: #dae5ff;
 }
 
 button.primary {
   min-width: 88px;
-  margin-left: auto;
   color: #ffffff;
   background-color: #305bb1;
   border-color: #305bb1;

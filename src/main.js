@@ -36,12 +36,14 @@
       updateURL('');
       input.focus();
     });
-    document.getElementById('example').addEventListener('click', () => {
-      input.value = '551';
-      resetResults();
-      updateURL('');
-      input.focus();
-    });
+    for (const button of form.querySelectorAll('[data-example]')) {
+      button.addEventListener('click', () => {
+        input.value = button.dataset.example;
+        resetResults();
+        updateURL('');
+        input.focus();
+      });
+    }
     copyURL.addEventListener('click', () => {
       copyText(searchURL(searchedValue).href, '検索URL');
     });
