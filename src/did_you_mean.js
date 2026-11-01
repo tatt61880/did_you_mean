@@ -1,11 +1,6 @@
 (function () {
   'use strict';
 
-  window.didYouMean = didYouMean;
-  window.isJugglable = isJugglable;
-  window.strToArr = strToArr;
-  window.listupDidYouMean = listupDidYouMean;
-
   const TYPE = {
     REMOVE: '1字削除',
     CHANGE: '1字変更',
@@ -14,53 +9,57 @@
     SWAP: '2字交換',
   };
 
-  window.TYPE = TYPE;
-
-  // シンプルな(多重配列でない)配列を、cloneメソッドでコピーできるようにする。
-  Array.prototype.clone = function () {
-    return Array.apply(null, this);
+  const api = {
+    TYPE,
+    normalizeSiteswap,
+    arrToStr,
+    strToArr,
+    isJugglable,
+    listupDidYouMean,
+    groupCandidates,
   };
 
-  function arrToStr(arr) {
-    let str = '';
-    for (let i = 0; i < arr.length; i++) {
-      if (!(typeof arr[i] === 'number')) {
-        alert('Error in arrToStr(): arr[' + i + "] isn't a number. " + arr[i]);
-        return '';
-      }
-      if (0 <= arr[i] && arr[i] <= 9) {
-        str += arr[i];
-      } else if (10 <= arr[i] && arr[i] <= 35) {
-        str += String.fromCharCode('a'.charCodeAt() + arr[i] - 10);
-      } else if (36 <= arr[i]) {
-        str += '<z+' + (arr[i] - 35) + '>';
-      } else {
-        alert('Error in arrToStr(): arr[' + i + '] = ' + arr[i]);
-        return '';
-      }
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = api;
+  } else {
+    Object.assign(window, api);
+  }
+
+  function normalizeSiteswap(str) {
+    return str
+      .replace(/[０-９Ａ-Ｚａ-ｚ]/g, (char) =>
+        String.fromCharCode(char.charCodeAt(0) - 0xfee0)
+      )
+      .replace(/\s/g, '')
+      .toLowerCase();
+  }
+
+  function isPattern(arr) {
+    if (!Array.isArray(arr)) return false;
+    for (const value of arr) {
+      if (!Number.isSafeInteger(value) || value < 0) return false;
     }
-    return str;
+    return true;
+  }
+
+  function arrToStr(arr) {
+    if (!isPattern(arr)) return null;
+    return arr
+      .map((value) => {
+        if (value <= 35) return value.toString(36);
+        return '<z+' + (value - 35) + '>';
+      })
+      .join('');
   }
 
   function strToArr(str) {
-    const arr = new Array();
-    for (let i = 0; i < str.length; i++) {
-      if ('0' <= str[i] && str[i] <= '9') {
-        arr.push(str[i].charCodeAt() - '0'.charCodeAt());
-      } else if ('a' <= str[i] && str[i] <= 'z') {
-        arr.push(str[i].charCodeAt() - 'a'.charCodeAt() + 10);
-      } else {
-        alert('入力可能な文字は、0～9と、a～zです。');
-        // alert("Error in strToArr(): str[" + i + "] = " + str[i]);
-        return '';
-      }
-    }
-    return arr;
+    if (typeof str !== 'string' || !/^[0-9a-z]*$/.test(str)) return null;
+    return Array.from(str, (char) => parseInt(char, 36));
   }
 
   // ジャグリング可能なサイトスワップになっているか否かを判定する。※引数は文字列ではなく、数字の配列。
   function isJugglable(arr) {
-    if (arr.length === 0) {
+    if (!isPattern(arr) || arr.length === 0) {
       return false;
     }
     const checkArr = new Array(arr.length);
@@ -79,15 +78,9 @@
     return true;
   }
 
-  function ave(arr) {
-    let sum = 0;
-    for (let i = 0, len = arr.length; i < len; ++i) {
-      sum += arr[i];
-    }
-    return sum / arr.length;
-  }
-
   function listupDidYouMean(pat) {
+    if (!isPattern(pat) || pat.length === 0) return [];
+
     const ssList = new Array();
 
     // TODO: Dealing Mulitplex and/or Sync patterns
@@ -95,13 +88,13 @@
     for (let i = 0, len = pat.length; i < len; i++) {
       sum += pat[i];
     }
-    const average = ~~(sum / pat.length);
+    const average = Math.floor(sum / pat.length);
 
     (function () {
       // Remove one element
       // e.g. 551 => 55, 51
       for (let i = 0; i < pat.length; i++) {
-        const trialPat = pat.clone();
+        const trialPat = pat.slice();
         trialPat.splice(i, 1);
         if (isJugglable(trialPat)) {
           ssList.push([TYPE.REMOVE, trialPat]);
@@ -115,7 +108,7 @@
         // e.g. 7351 => 1357, 7531
         for (let i = 0; i < pat.length; i++) {
           for (let j = i + 1; j < pat.length; j++) {
-            const trialPat = pat.clone();
+            const trialPat = pat.slice();
             trialPat[i] = pat[j];
             trialPat[j] = pat[i];
             if (isJugglable(trialPat)) {
@@ -169,14 +162,14 @@
         const diff2 = pat.length - (sum % pat.length); // (small -> large) e.g. 551 => 561, 552
         for (let i = 0; i < pat.length; i++) {
           {
-            const trialPat = pat.clone();
+            const trialPat = pat.slice();
             trialPat[i] = pat[i] - diff1;
             if (isJugglable(trialPat)) {
               ssList.push([TYPE.CHANGE, trialPat]);
             }
           }
           {
-            const trialPat = pat.clone();
+            const trialPat = pat.slice();
             trialPat[i] = pat[i] + diff2;
             if (isJugglable(trialPat)) {
               ssList.push([TYPE.CHANGE, trialPat]);
@@ -218,99 +211,33 @@
       }
     })();
 
-    return ssList.sort();
+    const unique = new Map();
+    for (const candidate of ssList) {
+      unique.set(JSON.stringify(candidate), candidate);
+    }
+    return Array.from(unique.values()).sort();
   }
 
-  const jmjsURL = 'http://yuji-k64613.github.io/jmjs/jmjs.html';
-
-  // もしかして機能
-  function didYouMean(ss) {
-    const resultSpan = document.getElementById('result-span');
-    resultSpan.innerHTML = '';
-
-    const inputStr = ss;
-
-    if (ss === '') {
-      resultSpan.appendChild(
-        document.createTextNode(inputStr + '何か入力してください。')
-      );
-      return;
-    }
-    const pat = strToArr(inputStr);
-
-    if (isJugglable(pat)) {
-      resultSpan.appendChild(document.createTextNode('「'));
-      const link = document.createElement('a');
-      link.href = jmjsURL + '?siteswap=' + inputStr;
-      link.appendChild(document.createTextNode(inputStr));
-      resultSpan.appendChild(link);
-      resultSpan.appendChild(
-        document.createTextNode(
-          '」はジャグリング可能な文字列です。←@yuji_k64613さんが作成した、JuggleMaster JavaScript版へのリンクです。'
-        )
-      );
-    } else {
-      let ssList = listupDidYouMean(pat);
-
-      // output
-      if (ssList.length === 0) {
-        resultSpan.appendChild(
-          document.createTextNode(
-            '「' +
-              inputStr +
-              '」はジャグリング不可能な文字列です。\n(似た文字列にもジャグリング可能な物はありません。)'
-          )
-        );
-      } else {
-        resultSpan.appendChild(
-          document.createTextNode(
-            '入力文字列: ' +
-              inputStr +
-              '\nもしかして: (下表をご参照ください) \n'
-          )
-        );
-        const table = document.getElementById('result-table');
-        table.innerHTML = '';
-
-        // ヘッダー部を追加
-        {
-          const tr = table.insertRow();
-          tr.appendChild(createTh('Siteswap'));
-          tr.appendChild(createTh('ボールの数'));
-          tr.appendChild(createTh('入力文字列との関係'));
-          tr.appendChild(
-            createTh(
-              '@yuji_k64613さんが作成した JuggleMaster JavaScript版 へのリンク'
-            )
-          );
-        }
-
-        ssList = ssList.sort();
-        let last = '';
-        ssList.forEach(function (siteswapArray) {
-          const method = siteswapArray[0];
-          const siteswap = arrToStr(siteswapArray[1]);
-          const num = ave(siteswapArray[1]);
-          if (last !== siteswap && !siteswap.match(/</)) {
-            // 「<z+α>」が含まれると、JavaScript版JuggleMasterへのリンクが正常にならないため、省きます。
-            last = siteswap;
-            const row = table.insertRow();
-            row.insertCell().appendChild(document.createTextNode(siteswap));
-            row.insertCell().appendChild(document.createTextNode(num));
-            row.insertCell().appendChild(document.createTextNode(method));
-            const link = document.createElement('a');
-            link.href = jmjsURL + '?siteswap=' + siteswap;
-            link.appendChild(document.createTextNode(link.href));
-            row.insertCell().appendChild(link);
-          }
+  // 同じ候補をまとめ、複数の操作で見つかった場合は操作名をすべて残す。
+  function groupCandidates(entries) {
+    const candidates = new Map();
+    for (const [method, pattern] of entries) {
+      // 0〜9・a〜zで表せない候補は、従来どおり表示対象から除く。
+      if (pattern.some((value) => value > 35)) continue;
+      const siteswap = arrToStr(pattern);
+      if (!candidates.has(siteswap)) {
+        const balls = pattern.reduce((sum, value) => sum + value, 0);
+        candidates.set(siteswap, {
+          siteswap,
+          balls: balls / pattern.length,
+          methods: [],
         });
       }
+      const candidate = candidates.get(siteswap);
+      if (!candidate.methods.includes(method)) candidate.methods.push(method);
     }
-
-    function createTh(text) {
-      const th = document.createElement('th');
-      th.innerText = text;
-      return th;
-    }
+    return Array.from(candidates.values()).sort(
+      (a, b) => a.balls - b.balls || a.siteswap.localeCompare(b.siteswap)
+    );
   }
 })();

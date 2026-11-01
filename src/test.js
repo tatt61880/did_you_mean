@@ -1,95 +1,30 @@
 (function () {
   'use strict';
 
-  let passedCount = 0;
-  let failedCount = 0;
-  let passedTable;
-  let failedTable;
-
-  const TYPE = window.TYPE;
-
-  document.addEventListener('DOMContentLoaded', function () {
-    testAll();
-  });
-
-  Array.prototype.equals = function (arr) {
-    if (arr instanceof Array) {
-      if (this.length !== arr.length) {
-        return false;
-      }
-
-      let f = true;
-
-      for (let i = 0; i < this.length; ++i) {
-        if (this[i] instanceof Array) {
-          f = this[i].equals(arr[i]);
-        } else {
-          f = this[i] === arr[i];
-        }
-
-        if (f === false) break;
-      }
-
-      return f;
-    } else {
-      return false;
-    }
-  };
-
-  Array.prototype.toStr = function () {
-    let str = '[';
-
-    for (let i = 0; i < this.length; ++i) {
-      if (this[i] instanceof Array) {
-        str += this[i].toStr();
-      } else {
-        if (typeof this[i] === 'string') {
-          str += '"' + this[i] + '"';
-        } else {
-          str += this[i];
-        }
-      }
-
-      if (i !== this.length - 1) str += ',';
-    }
-
-    str += ']';
-
-    return str;
-  };
+  const inNode = typeof window === 'undefined';
+  let api;
+  if (inNode) api = require('./did_you_mean.js');
+  else api = window;
+  const TYPE = api.TYPE;
+  const results = [];
 
   function printResult(functionName, parameters, actual, expected) {
-    if (actual === expected) {
-      passedCount++;
-
-      const row = passedTable.insertRow();
-      row.insertCell().appendChild(document.createTextNode(functionName));
-      row.insertCell().appendChild(document.createTextNode(parameters));
-      row.insertCell().appendChild(document.createTextNode(actual));
-    } else {
-      failedCount++;
-
-      const row = failedTable.insertRow();
-      row.insertCell().appendChild(document.createTextNode(functionName));
-      row.insertCell().appendChild(document.createTextNode(parameters));
-      row.insertCell().appendChild(document.createTextNode(actual));
-      row.insertCell().appendChild(document.createTextNode(expected));
-    }
+    results.push({
+      functionName,
+      parameters,
+      actual: JSON.stringify(actual),
+      expected: JSON.stringify(expected),
+      passed: JSON.stringify(actual) === JSON.stringify(expected),
+    });
   }
 
-  function assertisJugglable(SS, exp) {
-    const actual = window.isJugglable(window.strToArr(SS));
-    printResult('isJugglable', 'strToArr("' + SS + '")', actual, exp);
+  function assertisJugglable(ss, expected) {
+    printResult('isJugglable', ss, api.isJugglable(api.strToArr(ss)), expected);
   }
 
-  function assertDidYouMean(SS, exp) {
-    const actual = window //
-      .listupDidYouMean(window.strToArr(SS))
-      .sort()
-      .toStr();
-    const expected = exp.sort().toStr();
-
-    printResult('listupDidYouMean', 'strToArr("' + SS + '")', actual, expected);
+  function assertDidYouMean(ss, expected) {
+    const actual = api.listupDidYouMean(api.strToArr(ss)).sort();
+    printResult('listupDidYouMean', ss, actual, expected.sort());
   }
 
   function testIsSiteswap() {
@@ -137,54 +72,137 @@
     ]);
   }
 
+  function testInput() {
+    for (const [input, expected] of [
+      ['５５１', '551'],
+      ['ＳＩＴＥＳＷＡＰ', 'siteswap'],
+      ['Siteswap', 'siteswap'],
+      [' ５ ５\n１　', '551'],
+      ['', ''],
+      ['③', '③'],
+    ]) {
+      printResult(
+        'normalizeSiteswap',
+        input,
+        api.normalizeSiteswap(input),
+        expected
+      );
+    }
+    for (const input of ['?', '%', '<img>', 'あ', '５５１', null]) {
+      printResult('strToArr', input, api.strToArr(input), null);
+    }
+    printResult('strToArr', '09az', api.strToArr('09az'), [0, 9, 10, 35]);
+    printResult('strToArr', 'empty', api.strToArr(''), []);
+    for (const input of [
+      null,
+      '',
+      [],
+      [NaN],
+      [Infinity],
+      [-1],
+      [1.5],
+      [undefined],
+    ]) {
+      printResult('isJugglable', String(input), api.isJugglable(input), false);
+      printResult(
+        'listupDidYouMean',
+        String(input),
+        api.listupDidYouMean(input),
+        []
+      );
+    }
+    printResult('arrToStr', '0,9,10,35', api.arrToStr([0, 9, 10, 35]), '09az');
+    printResult('arrToStr', '36', api.arrToStr([36]), '<z+1>');
+    printResult('arrToStr', 'invalid', api.arrToStr([-1]), null);
+    const pattern = [5, 5, 1];
+    api.listupDidYouMean(pattern);
+    printResult('listupDidYouMean', '入力を変更しない', pattern, [5, 5, 1]);
+  }
+
+  function testCandidates() {
+    assertDidYouMean('2', [[TYPE.INSERT, [2, 2]]]);
+    const entries = [
+      [TYPE.SWAP, [5, 3, 1]],
+      [TYPE.MOVE, [5, 3, 1]],
+      [TYPE.SWAP, [5, 3, 1]],
+      [TYPE.INSERT, [36]],
+      [TYPE.REMOVE, [5, 1]],
+    ];
+    printResult(
+      'groupCandidates',
+      '重複・複数の操作・表示範囲',
+      api.groupCandidates(entries),
+      [
+        { siteswap: '51', balls: 3, methods: [TYPE.REMOVE] },
+        { siteswap: '531', balls: 3, methods: [TYPE.SWAP, TYPE.MOVE] },
+      ]
+    );
+    printResult('groupCandidates', 'empty', api.groupCandidates([]), []);
+    let valid = true;
+    // 独立した判定方法で、探索された候補の着地点がすべて異なることを確認。
+    for (let value = 0; value < 1000; value++) {
+      const input = api.strToArr(String(value).padStart(3, '0'));
+      for (const [, pattern] of api.listupDidYouMean(input)) {
+        const landings = pattern.map(
+          (height, index) => (height + index) % pattern.length
+        );
+        if (
+          new Set(landings).size !== pattern.length ||
+          pattern.some((height) => height < 0)
+        ) {
+          valid = false;
+        }
+      }
+    }
+    printResult('listupDidYouMean', '000〜999の全候補の成立性', valid, true);
+  }
+
   function testAll() {
-    passedTable = document.getElementById('PassedResultTable');
-    failedTable = document.getElementById('FailedResultTable');
-
-    {
-      const tr = passedTable.insertRow();
-      tr.appendChild(createTh('Function'));
-      tr.appendChild(createTh('Parameter'));
-      tr.appendChild(createTh('Return'));
-    }
-
-    {
-      const tr = failedTable.insertRow();
-      tr.appendChild(createTh('Function'));
-      tr.appendChild(createTh('Parameter'));
-      tr.appendChild(createTh('Return'));
-      tr.appendChild(createTh('Expected'));
-    }
-
     testIsSiteswap();
     testDidYouMean();
+    testInput();
+    testCandidates();
+    const passed = results.filter((result) => result.passed);
+    const failed = results.filter((result) => !result.passed);
+    const message = passed.length + '件成功 / ' + failed.length + '件失敗';
+    if (inNode) {
+      console.log(message);
+      for (const result of failed) console.error(result);
+      if (failed.length > 0) process.exitCode = 1;
+      return;
+    }
+    document.getElementById('PassedResult').textContent =
+      passed.length + '件成功';
+    document.getElementById('FailedResult').textContent =
+      failed.length + '件失敗';
+    document.getElementById('Notes').textContent = message;
+    renderTable('PassedResultTable', passed);
+    renderTable('FailedResultTable', failed);
+  }
 
-    if (failedCount === 0) {
-      const notesSpan = document.getElementById('Notes');
-      notesSpan.appendChild(
-        document.createTextNode('Passed all ' + passedCount + ' tests!')
-      );
-      failedTable.deleteRow(0);
-    } else {
-      const passedSpan = document.getElementById('PassedResult');
-      passedSpan.appendChild(
-        document.createTextNode('Passed ' + passedCount + ' tests.')
-      );
-      const failedSpan = document.getElementById('FailedResult');
-      failedSpan.appendChild(
-        document.createTextNode('Failed ' + failedCount + ' tests.')
-      );
-      const notesSpan = document.getElementById('Notes');
-      notesSpan.appendChild(
-        document.createTextNode('There are failed tests below.')
-      );
+  function renderTable(id, rows) {
+    const table = document.getElementById(id);
+    if (rows.length === 0) return;
+    const header = table.insertRow();
+    for (const label of ['関数', '入力・確認内容', '結果', '期待値']) {
+      const cell = document.createElement('th');
+      cell.scope = 'col';
+      cell.textContent = label;
+      header.append(cell);
+    }
+    for (const result of rows) {
+      const row = table.insertRow();
+      for (const value of [
+        result.functionName,
+        result.parameters,
+        result.actual,
+        result.expected,
+      ]) {
+        row.insertCell().textContent = value;
+      }
     }
   }
 
-  function createTh(text) {
-    const th = document.createElement('th');
-    th.innerText = text;
-
-    return th;
-  }
+  if (inNode) testAll();
+  else document.addEventListener('DOMContentLoaded', testAll);
 })();

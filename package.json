@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "did_you_mean",
-  "version": "1.0.1",
+  "version": "1.6.0",
   "description": "did_you_mean by tatt61880",
   "license": "MIT",
   "repository": {
@@ -17,7 +17,8 @@
     "lint": "npm run eslint && npm run htmlhint && npm run stylelint",
     "eslint": "eslint eslint.config.js ./src/*.js --fix",
     "htmlhint": "htmlhint ./*.html",
-    "stylelint": "stylelint ./css/*.css --fix"
+    "stylelint": "stylelint ./css/*.css --fix",
+    "test": "node ./src/test.js"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

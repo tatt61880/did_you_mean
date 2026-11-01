@@ -4,62 +4,84 @@
 <head>
   <title>もしかしてサイトスワップ</title>
   <meta charset="UTF-8">
-
-  <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.10.27">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ジャグリングできないサイトスワップから、文字の削除・変更・挿入・移動・交換で成立する候補を探します。">
+  <link rel="icon" type="image/png" href="./images/favicon.png?2023.10.27">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.10.27">
-
   <link rel="stylesheet" href="./css/main.css">
-
   <script defer src="./src/did_you_mean.js"></script>
   <script defer src="./src/main.js"></script>
 </head>
 
 <body>
-  <div id="contents">
-    <h1>もしかしてサイトスワップ v1.5.0</h1>
+  <main id="contents">
+    <h1>もしかしてサイトスワップ <small>v1.6.0</small></h1>
     <div class="inner">
-      <button id="search">検索</button>
-      <input id="siteswap" type="text">
-      <br>
-      <div style="margin-left:10px">
-        <a href="http://twitter.com/share" class="twitter-share-button">ツイート</a>
+      <p>ジャグリングできる、似たサイトスワップを探します。</p>
+      <form id="search-form">
+        <label for="siteswap">サイトスワップ</label>
+        <input id="siteswap" name="ss" type="text" placeholder="例: 551 / 7351 / siteswap" autocomplete="off"
+          autocapitalize="none" spellcheck="false" enterkeyhint="search" aria-describedby="input-help result-status">
+        <p id="input-help" class="hint">
+          0〜9・a〜zで入力してください（100文字まで）。<br>
+          全角英数字・大文字は半角小文字に変換し、空白は取り除きます。
+        </p>
+        <div class="form-actions">
+          <button id="clear" type="button">クリア</button>
+          <button id="example" type="button">例を入力</button>
+          <button id="search" class="primary" type="submit">検索</button>
+        </div>
+      </form>
+      <noscript><p>検索するにはJavaScriptを有効にしてください。</p></noscript>
+      <p id="result-status" class="result-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      <div id="results" class="table-scroll" tabindex="0" role="region" aria-label="検索候補" hidden>
+        <table id="result-table">
+          <caption>候補一覧（ボールの数が少ない順）</caption>
+          <thead>
+            <tr>
+              <th scope="col">候補</th>
+              <th scope="col">ボール数</th>
+              <th scope="col">変更内容</th>
+              <th scope="col">操作</th>
+            </tr>
+          </thead>
+          <tbody id="result-body"></tbody>
+        </table>
       </div>
-      <script> !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs'); </script>
-      <pre><span id="result-span"></span></pre>
-      <table id="result-table" style="border:0px solid;">
-      </table>
+      <div class="share-actions">
+        <button id="copy-url" type="button" disabled>検索URLをコピー</button>
+        <a id="share" href="https://twitter.com/intent/tweet" target="_blank" rel="noopener noreferrer" hidden>Xで共有</a>
+      </div>
+      <p id="copy-status" class="hint" role="status" aria-live="polite" aria-atomic="true"></p>
+      <p class="hint">「動きを見る」で、@yuji_k64613さんのJuggleMaster JavaScript版を別のタブに開きます。</p>
     </div>
 
     <h2>概要</h2>
     <div class="inner">
-      <p>
-        サイトスワップとしてジャグリング不可能な文字列が入力されたときに、似た文字列でジャグリング可能なものを返します。<br>
-        ここで言う「似た文字列」というのは、下記のいずれかです。<br>
-      </p>
+      <p>サイトスワップとしてジャグリングできない文字列から、次の操作で成立する候補を探します。</p>
       <ul>
-        <li>1字削除 (例: 5<strong>5</strong>1 → 51)</li>
-        <li>1字変更 (例: 5<strong>5</strong>1 → 531)</li>
-        <li>1字挿入 (例: 551 → 55<strong>5</strong>1)</li>
-        <li>1字移動 (例: 53<strong>7</strong>1 → 7531)</li>
-        <li>2字交換 (例: 7<strong>35</strong>1 → 7531)</li>
+        <li>1字削除（例: 5<strong>5</strong>1 → 51）</li>
+        <li>1字変更（例: 5<strong>5</strong>1 → 531）</li>
+        <li>1字挿入（例: 551 → 55<strong>5</strong>1）</li>
+        <li>1字移動（例: 53<strong>7</strong>1 → 7531）</li>
+        <li>2字交換（例: 7<strong>35</strong>1 → 7531）</li>
       </ul>
+      <p class="hint">
+        通常のサイトスワップが対象です。同時投げ・マルチプレックスには対応していません。<br>
+        候補の探索範囲は限定しており、上記の操作で成立するすべての候補を列挙するものではありません。
+      </p>
     </div>
 
     <h2>プログラムのテスト</h2>
     <div class="inner">
-      <p>
-        開発者向け: テストを作成しました。<br>
-        <a href="./test.html">もしかしてサイトスワップのテスト</a>
-      </p>
+      <p><a href="./test.html">もしかしてサイトスワップのテスト</a>（開発者向け）</p>
     </div>
 
     <h2>このツールの作者</h2>
     <div class="inner">
-      <p>
-        Tatt(たっと) <a href="https://x.com/tatt61880">@tatt61880</a>
-      </p>
+      <p>Tatt(たっと) <a href="https://x.com/tatt61880">@tatt61880</a></p>
     </div>
-  </div>
+  </main>
 </body>
 
 </html>
